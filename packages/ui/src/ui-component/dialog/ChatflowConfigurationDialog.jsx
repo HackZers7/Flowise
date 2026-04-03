@@ -14,45 +14,48 @@ import FollowUpPrompts from '@/ui-component/extended/FollowUpPrompts'
 import FileUpload from '@/ui-component/extended/FileUpload'
 import PostProcessing from '@/ui-component/extended/PostProcessing'
 
+// i18n
+import { useTranslation } from 'react-i18next'
+
 const CHATFLOW_CONFIGURATION_TABS = [
     {
-        label: 'Security',
+        label: 'dialogs.chatflow.security',
         id: 'security'
     },
     {
-        label: 'Starter Prompts',
+        label: 'dialogs.chatflow.conversationStarters',
         id: 'conversationStarters'
     },
     {
-        label: 'Follow-up Prompts',
+        label: 'dialogs.chatflow.followUpPrompts',
         id: 'followUpPrompts'
     },
     {
-        label: 'Speech to Text',
+        label: 'dialogs.chatflow.speechToText',
         id: 'speechToText'
     },
     {
-        label: 'Text to Speech',
+        label: 'dialogs.chatflow.textToSpeech',
         id: 'textToSpeech'
     },
     {
-        label: 'Chat Feedback',
+        label: 'dialogs.chatflow.chatFeedback',
         id: 'chatFeedback'
     },
     {
-        label: 'Analyse Chatflow',
+        label: 'dialogs.chatflow.analyseChatflow',
         id: 'analyseChatflow'
     },
     {
-        label: 'Leads',
+        label: 'dialogs.chatflow.leads',
         id: 'leads'
     },
     {
-        label: 'File Upload',
+        label: 'dialogs.chatflow.fileUpload',
         id: 'fileUpload'
     },
     {
-        label: 'Post Processing',
+        label: 'dialogs.chatflow.postProcessing',
         id: 'postProcessing'
     }
 ]
@@ -87,6 +90,7 @@ function a11yProps(index) {
 }
 
 const ChatflowConfigurationDialog = ({ show, isAgentCanvas, dialogProps, onCancel }) => {
+    const { t } = useTranslation()
     const portalElement = document.getElementById('portal')
     const [tabValue, setTabValue] = useState(0)
 
@@ -130,7 +134,7 @@ const ChatflowConfigurationDialog = ({ show, isAgentCanvas, dialogProps, onCance
                                 mb: 1
                             }}
                             key={item.id}
-                            label={item.label}
+                            label={t(item.label)}
                             {...a11yProps(index)}
                         ></Tab>
                     ))}
