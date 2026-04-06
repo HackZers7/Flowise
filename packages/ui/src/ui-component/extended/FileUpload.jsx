@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { enqueueSnackbar as enqueueSnackbarAction, closeSnackbar as closeSnackbarAction, SET_CHATFLOW } from '@/store/actions'
-import parser from 'html-react-parser'
 
 // material-ui
 import { Button, Box, Typography, FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material'
@@ -18,9 +17,8 @@ import useNotifier from '@/utils/useNotifier'
 // API
 import chatflowsApi from '@/api/chatflows'
 
-const message = `The full contents of uploaded files will be converted to text and sent to the Agent.
-<br />
-Refer <a href='https://docs.flowiseai.com/using-flowise/uploads#files' target='_blank'>docs</a> for more details.`
+// i18n
+import { useTranslation, Trans } from 'react-i18next'
 
 const availableFileTypes = [
     { name: 'CSS', ext: 'text/css', extension: '.css' },
@@ -40,6 +38,7 @@ const availableFileTypes = [
 ]
 
 const FileUpload = ({ dialogProps }) => {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const customization = useSelector((state) => state.customization)
 
@@ -92,7 +91,7 @@ const FileUpload = ({ dialogProps }) => {
             })
             if (saveResp.data) {
                 enqueueSnackbar({
-                    message: 'File Upload Configuration Saved',
+                    message: t('components.fileUpload.messages.success'),
                     options: {
                         key: new Date().getTime() + Math.random(),
                         variant: 'success',
@@ -107,9 +106,9 @@ const FileUpload = ({ dialogProps }) => {
             }
         } catch (error) {
             enqueueSnackbar({
-                message: `Failed to save File Upload Configuration: ${
-                    typeof error.response.data === 'object' ? error.response.data.message : error.response.data
-                }`,
+                message: t('components.fileUpload.messages.error', {
+                    msg: typeof error.response.data === 'object' ? error.response.data.message : error.response.data
+                }),
                 options: {
                     key: new Date().getTime() + Math.random(),
                     variant: 'error',
@@ -188,13 +187,22 @@ const FileUpload = ({ dialogProps }) => {
                         }}
                     >
                         <IconBulb size={30} color='#2d6a4f' />
-                        <span style={{ color: '#2d6a4f', marginLeft: 10, fontWeight: 500 }}>{parser(message)}</span>
+                        <span style={{ color: '#2d6a4f', marginLeft: 10, fontWeight: 500 }}>
+                            <Trans
+                                i18nKey='components.fileUpload.docsHelp'
+                                components={{
+                                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                                    a: <a href='https://docs.flowiseai.com/using-flowise/uploads#files' target='_blank' rel='noreferrer' />,
+                                    br: <br />
+                                }}
+                            />
+                        </span>
                     </div>
                 </div>
-                <SwitchInput label='Enable Full File Upload' onChange={handleChange} value={fullFileUpload} />
+                <SwitchInput label={t('components.fileUpload.enableLabel')} onChange={handleChange} value={fullFileUpload} />
             </Box>
 
-            <Typography sx={{ fontSize: 14, fontWeight: 500, marginBottom: 1 }}>Allow Uploads of Type</Typography>
+            <Typography sx={{ fontSize: 14, fontWeight: 500, marginBottom: 1 }}>{t('components.fileUpload.allowUploadsType')}</Typography>
             <div
                 style={{
                     display: 'grid',
@@ -245,22 +253,32 @@ const FileUpload = ({ dialogProps }) => {
                     <Typography
                         sx={{ fontSize: 16, fontWeight: 600, marginBottom: 2, color: customization.isDarkMode ? '#ffffff' : '#424242' }}
                     >
-                        PDF Configuration
+                        {t('components.fileUpload.configuration.title')}
                     </Typography>
 
                     <Box>
-                        <Typography sx={{ fontSize: 14, fontWeight: 500, marginBottom: 1 }}>PDF Usage</Typography>
+                        <Typography sx={{ fontSize: 14, fontWeight: 500, marginBottom: 1 }}>
+                            {t('components.fileUpload.configuration.usage.title')}
+                        </Typography>
                         <FormControl disabled={!fullFileUpload}>
                             <RadioGroup name='pdf-usage' value={pdfUsage} onChange={handlePdfUsageChange}>
-                                <FormControlLabel value='perPage' control={<Radio />} label='One document per page' />
-                                <FormControlLabel value='perFile' control={<Radio />} label='One document per file' />
+                                <FormControlLabel
+                                    value='perPage'
+                                    control={<Radio />}
+                                    label={t('components.fileUpload.configuration.usage.oneDocPerPage')}
+                                />
+                                <FormControlLabel
+                                    value='perFile'
+                                    control={<Radio />}
+                                    label={t('components.fileUpload.configuration.usage.oneDocPerFile')}
+                                />
                             </RadioGroup>
                         </FormControl>
                     </Box>
 
                     <Box>
                         <SwitchInput
-                            label='Use Legacy Build (for PDF compatibility issues)'
+                            label={t('components.fileUpload.configuration.legacy')}
                             onChange={handleLegacyBuildChange}
                             value={pdfLegacyBuild}
                             disabled={!fullFileUpload}
@@ -270,7 +288,7 @@ const FileUpload = ({ dialogProps }) => {
             )}
 
             <StyledButton style={{ marginBottom: 10, marginTop: 20 }} variant='contained' onClick={onSave}>
-                Save
+                {t('common.actions.save')}
             </StyledButton>
         </>
     )
