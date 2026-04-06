@@ -19,43 +19,43 @@ import { useTranslation } from 'react-i18next'
 
 const CHATFLOW_CONFIGURATION_TABS = [
     {
-        label: 'dialogs.chatflow.security',
+        label: 'components.dialogs.chatflow.security',
         id: 'security'
     },
     {
-        label: 'dialogs.chatflow.conversationStarters',
+        label: 'components.dialogs.chatflow.conversationStarters',
         id: 'conversationStarters'
     },
     {
-        label: 'dialogs.chatflow.followUpPrompts',
+        label: 'components.dialogs.chatflow.followUpPrompts',
         id: 'followUpPrompts'
     },
     {
-        label: 'dialogs.chatflow.speechToText',
+        label: 'components.dialogs.chatflow.speechToText',
         id: 'speechToText'
     },
     {
-        label: 'dialogs.chatflow.textToSpeech',
+        label: 'components.dialogs.chatflow.textToSpeech',
         id: 'textToSpeech'
     },
     {
-        label: 'dialogs.chatflow.chatFeedback',
+        label: 'components.dialogs.chatflow.chatFeedback',
         id: 'chatFeedback'
     },
     {
-        label: 'dialogs.chatflow.analyseChatflow',
+        label: 'components.dialogs.chatflow.analyseChatflow',
         id: 'analyseChatflow'
     },
     {
-        label: 'dialogs.chatflow.leads',
+        label: 'components.dialogs.chatflow.leads',
         id: 'leads'
     },
     {
-        label: 'dialogs.chatflow.fileUpload',
+        label: 'components.dialogs.chatflow.fileUpload',
         id: 'fileUpload'
     },
     {
-        label: 'dialogs.chatflow.postProcessing',
+        label: 'components.dialogs.chatflow.postProcessing',
         id: 'postProcessing'
     }
 ]
