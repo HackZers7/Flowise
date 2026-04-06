@@ -17,7 +17,11 @@ import useNotifier from '@/utils/useNotifier'
 // API
 import chatflowsApi from '@/api/chatflows'
 
+// i18n
+import { useTranslation } from 'react-i18next'
+
 const AllowedDomains = ({ dialogProps, onConfirm }) => {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
 
     useNotifier()
@@ -60,7 +64,7 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
             })
             if (saveResp.data) {
                 enqueueSnackbar({
-                    message: 'Allowed Origins Saved',
+                    message: t('components.allowedDomains.messages.saved'),
                     options: {
                         key: new Date().getTime() + Math.random(),
                         variant: 'success',
@@ -76,9 +80,9 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
             }
         } catch (error) {
             enqueueSnackbar({
-                message: `Failed to save Allowed Origins: ${
-                    typeof error.response.data === 'object' ? error.response.data.message : error.response.data
-                }`,
+                message: t('components.allowedDomains.messages.failed', {
+                    msg: typeof error.response.data === 'object' ? error.response.data.message : error.response.data
+                }),
                 options: {
                     key: new Date().getTime() + Math.random(),
                     variant: 'error',
@@ -121,15 +125,12 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
     return (
         <Stack direction='column' spacing={2} sx={{ alignItems: 'start' }}>
             <Typography variant='h3'>
-                Allowed Domains
-                <TooltipWithParser
-                    style={{ mb: 1, mt: 2, marginLeft: 10 }}
-                    title={'Your chatbot will only work when used from the following domains.'}
-                />
+                {t('components.allowedDomains.title')}
+                <TooltipWithParser style={{ mb: 1, mt: 2, marginLeft: 10 }} title={t('components.allowedDomains.tooltip')} />
             </Typography>
             <Stack direction='column' spacing={2} sx={{ width: '100%' }}>
                 <Stack direction='column' spacing={2}>
-                    <Typography>Domains</Typography>
+                    <Typography>{t('components.allowedDomains.shortTitle')}</Typography>
                     {inputFields.map((origin, index) => {
                         return (
                             <div key={index} style={{ display: 'flex', width: '100%' }}>
@@ -174,18 +175,15 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
                 </Stack>
                 <Stack direction='column' spacing={1}>
                     <Typography>
-                        Error Message
-                        <TooltipWithParser
-                            style={{ mb: 1, mt: 2, marginLeft: 10 }}
-                            title={'Custom error message that will be shown when for unauthorized domain'}
-                        />
+                        {t('components.allowedDomains.error.title')}
+                        <TooltipWithParser style={{ mb: 1, mt: 2, marginLeft: 10 }} title={t('components.allowedDomains.error.tooltip')} />
                     </Typography>
                     <OutlinedInput
                         sx={{ width: '100%' }}
                         type='text'
                         size='small'
                         fullWidth
-                        placeholder='Unauthorized domain!'
+                        placeholder={t('components.allowedDomains.error.placeholder')}
                         value={errorMessage}
                         onChange={(e) => {
                             setErrorMessage(e.target.value)
@@ -194,7 +192,7 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
                 </Stack>
             </Stack>
             <StyledButton variant='contained' onClick={onSave}>
-                Save
+                {t('common.actions.save')}
             </StyledButton>
         </Stack>
     )
