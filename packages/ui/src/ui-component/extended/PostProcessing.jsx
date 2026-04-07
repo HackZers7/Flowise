@@ -79,8 +79,8 @@ const PostProcessing = ({ dialogProps }) => {
                 hideCodeExecute: true
             },
             languageType: 'js',
-            confirmButtonName: t('common.actions.save'),
-            cancelButtonName: t('common.actions.cancel')
+            confirmButtonName: t('components.postProcessing.actions.save'),
+            cancelButtonName: t('components.postProcessing.actions.cancel')
         }
         setExpandDialogProps(dialogProps)
         setShowExpandDialog(true)
@@ -311,7 +311,7 @@ const PostProcessing = ({ dialogProps }) => {
                 disabled={!postProcessingFunction || postProcessingFunction?.trim().length === 0}
                 onClick={onSave}
             >
-                {t('common.actions.save')}
+                {t('components.postProcessing.actions.save')}
             </StyledButton>
             <ExpandTextDialog
                 show={showExpandDialog}

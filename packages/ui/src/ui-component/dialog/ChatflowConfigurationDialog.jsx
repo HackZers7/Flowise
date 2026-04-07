@@ -19,43 +19,43 @@ import { useTranslation } from 'react-i18next'
 
 const CHATFLOW_CONFIGURATION_TABS = [
     {
-        label: 'components.dialogs.chatflow.security',
+        label: 'components.dialogs.chatflow.tabs.security',
         id: 'security'
     },
     {
-        label: 'components.dialogs.chatflow.conversationStarters',
+        label: 'components.dialogs.chatflow.tabs.conversationStarters',
         id: 'conversationStarters'
     },
     {
-        label: 'components.dialogs.chatflow.followUpPrompts',
+        label: 'components.dialogs.chatflow.tabs.followUpPrompts',
         id: 'followUpPrompts'
     },
     {
-        label: 'components.dialogs.chatflow.speechToText',
+        label: 'components.dialogs.chatflow.tabs.speechToText',
         id: 'speechToText'
     },
     {
-        label: 'components.dialogs.chatflow.textToSpeech',
+        label: 'components.dialogs.chatflow.tabs.textToSpeech',
         id: 'textToSpeech'
     },
     {
-        label: 'components.dialogs.chatflow.chatFeedback',
+        label: 'components.dialogs.chatflow.tabs.chatFeedback',
         id: 'chatFeedback'
     },
     {
-        label: 'components.dialogs.chatflow.analyseChatflow',
+        label: 'components.dialogs.chatflow.tabs.analyseChatflow',
         id: 'analyseChatflow'
     },
     {
-        label: 'components.dialogs.chatflow.leads',
+        label: 'components.dialogs.chatflow.tabs.leads',
         id: 'leads'
     },
     {
-        label: 'components.dialogs.chatflow.fileUpload',
+        label: 'components.dialogs.chatflow.tabs.fileUpload',
         id: 'fileUpload'
     },
     {
-        label: 'components.dialogs.chatflow.postProcessing',
+        label: 'components.dialogs.chatflow.tabs.postProcessing',
         id: 'postProcessing'
     }
 ]

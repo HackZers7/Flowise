@@ -202,7 +202,7 @@ const StarterPrompts = ({ dialogProps, onConfirm }) => {
                 </List>
             </Box>
             <StyledButton variant='contained' onClick={onSave}>
-                {t('common.actions.save')}
+                {t('components.starterPrompts.actions.save')}
             </StyledButton>
         </>
     )

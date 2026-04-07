@@ -604,7 +604,7 @@ const FollowUpPrompts = ({ dialogProps }) => {
                 )}
             </Box>
             <StyledButton disabled={checkDisabled()} variant='contained' onClick={onSave}>
-                {t('common.actions.save')}
+                {t('components.followUpPrompts.actions.save')}
             </StyledButton>
         </>
     )

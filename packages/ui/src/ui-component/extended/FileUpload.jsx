@@ -288,7 +288,7 @@ const FileUpload = ({ dialogProps }) => {
             )}
 
             <StyledButton style={{ marginBottom: 10, marginTop: 20 }} variant='contained' onClick={onSave}>
-                {t('common.actions.save')}
+                {t('components.fileUpload.actions.save')}
             </StyledButton>
         </>
     )
