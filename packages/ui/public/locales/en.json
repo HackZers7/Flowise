@@ -2238,6 +2238,12 @@
         "stopingLoading": "Stopping...",
         "provideFeedback": "Provide Feedback",
         "feedback": "Feedback",
+        "checklist": "Checklist ({{count}})",
+        "thinking": {
+            "loading": "Thinking...",
+            "done_one": "Thought for {{count}} second",
+            "done_other": "Thought for {{count}} seconds"
+        },
         "inputs": {
             "name": "Name",
             "email": "Email Address",
@@ -2265,7 +2271,13 @@
             "clear": "Clear",
             "chat": "Chat",
             "expandChat": "Expand Chat",
-            "expand": "Expand"
+            "expand": "Expand",
+            "validation": "validation",
+            "validateNodes": "Validate Nodes",
+            "validateFlow": {
+                "title": "Validate Flow",
+                "loading": "Validating..."
+            }
         },
         "messages": {
             "message": {
@@ -2276,6 +2288,10 @@
             },
             "clear": {
                 "success": "Succesfully cleared all chat history"
+            },
+            "validation": {
+                "success": "No issues found in your flow!",
+                "error": "Failed to validate flow"
             }
         },
         "errors": {
