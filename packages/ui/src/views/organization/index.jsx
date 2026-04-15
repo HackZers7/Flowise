@@ -31,56 +31,61 @@ import AzureSSOLoginIcon from '@/assets/images/microsoft-azure.svg'
 import { useConfig } from '@/store/context/ConfigContext'
 import { IconCircleCheck, IconExclamationCircle } from '@tabler/icons-react'
 
+// i18n
+import { useTranslation } from 'react-i18next'
+
 // ==============================|| Organization & Admin User Setup ||============================== //
 
 // IMPORTANT: when updating this schema, update the schema on the server as well
 // packages/server/src/enterprise/Interface.Enterprise.ts
-const OrgSetupSchema = z
-    .object({
-        username: z.string().min(1, 'Name is required'),
-        email: z.string().min(1, 'Email is required').email('Invalid email address'),
-        password: passwordSchema(t),
-        confirmPassword: z.string().min(1, 'Confirm Password is required')
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Passwords don't match",
-        path: ['confirmPassword']
-    })
+const OrgSetupSchema = (t) =>
+    z
+        .object({
+            username: z.string().min(1, t('common.validation.name.required')),
+            email: z.string().min(1, t('common.validation.email.required')).email(t('common.validation.email.invalid')),
+            password: passwordSchema(t),
+            confirmPassword: z.string().min(1, t('common.validation.confirm.required'))
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+            message: t('common.validation.confirm.match'),
+            path: ['confirmPassword']
+        })
 
 const OrganizationSetupPage = () => {
+    const { t } = useTranslation()
     useNotifier()
     const { isEnterpriseLicensed, isOpenSource } = useConfig()
 
     const orgNameInput = {
-        label: 'Organization',
+        label: t('organization.inputs.organization.title'),
         name: 'organization',
         type: 'text',
-        placeholder: 'Acme'
+        placeholder: t('organization.inputs.organization.placeholder')
     }
 
     const usernameInput = {
-        label: 'Username',
+        label: t('organization.inputs.username.title'),
         name: 'username',
         type: 'text',
-        placeholder: 'John Doe'
+        placeholder: t('organization.inputs.username.placeholder')
     }
 
     const passwordInput = {
-        label: 'Password',
+        label: t('organization.inputs.password.title'),
         name: 'password',
         type: 'password',
         placeholder: '********'
     }
 
     const confirmPasswordInput = {
-        label: 'Confirm Password',
+        label: t('organization.inputs.confirmPassword.title'),
         name: 'confirmPassword',
         type: 'password',
         placeholder: '********'
     }
 
     const emailInput = {
-        label: 'EMail',
+        label: t('organization.inputs.email'),
         name: 'email',
         type: 'email',
         placeholder: 'user@company.com'
@@ -109,7 +114,7 @@ const OrganizationSetupPage = () => {
 
     const register = async (event) => {
         event.preventDefault()
-        const result = OrgSetupSchema.safeParse({
+        const result = OrgSetupSchema(t).safeParse({
             orgName,
             username,
             email,
@@ -129,12 +134,12 @@ const OrganizationSetupPage = () => {
                     })
 
                     if (!authResult || !authResult.data || authResult.data.message !== 'Authentication successful') {
-                        setAuthError('Authentication failed. Please check your existing credentials.')
+                        setAuthError(t('organization.errors.authFailed'))
                         setLoading(false)
                         return
                     }
                 } catch (error) {
-                    setAuthError('Authentication failed. Please check your existing credentials.')
+                    setAuthError(t('organization.errors.authFailed'))
                     setLoading(false)
                     return
                 }
@@ -169,15 +174,19 @@ const OrganizationSetupPage = () => {
                     : registerAccountApi.error.response.data
             let finalErrMessage = ''
             if (isEnterpriseLicensed) {
-                finalErrMessage = `Error in registering organization. Please contact your administrator. (${errMessage})`
+                finalErrMessage = t('organization.errors.registration.enterprise', {
+                    msg: errMessage
+                })
             } else {
-                finalErrMessage = `Error in registering account: ${errMessage}`
+                finalErrMessage = t('organization.errors.registration.base', {
+                    msg: errMessage
+                })
             }
             setAuthError(finalErrMessage)
             setLoading(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [registerAccountApi.error])
+    }, [registerAccountApi.error, t])
 
     useEffect(() => {
         if (getBasicAuthApi.data && getBasicAuthApi.data.isUsernamePasswordSet === true) {
@@ -268,18 +277,10 @@ const OrganizationSetupPage = () => {
                         </Alert>
                     )}
                     <Stack sx={{ gap: 1 }}>
-                        <Typography variant='h1'>Setup Account</Typography>
+                        <Typography variant='h1'>{t('organization.setup.title')}</Typography>
                     </Stack>
-                    {requiresAuthentication && (
-                        <Alert severity='info'>
-                            Application authentication now requires email and password. Contact administrator to setup an account.
-                        </Alert>
-                    )}
-                    {(isOpenSource || isEnterpriseLicensed) && (
-                        <Typography variant='caption'>
-                            Account setup does not make any external connections, your data stays securely on your locally hosted server.
-                        </Typography>
-                    )}
+                    {requiresAuthentication && <Alert severity='info'>{t('organization.setup.info')}</Alert>}
+                    {(isOpenSource || isEnterpriseLicensed) && <Typography variant='caption'>{t('organization.setup.caption')}</Typography>}
                     <form onSubmit={register}>
                         <Stack sx={{ width: '100%', flexDirection: 'column', alignItems: 'left', justifyContent: 'center', gap: 2 }}>
                             {requiresAuthentication && (
@@ -287,40 +288,42 @@ const OrganizationSetupPage = () => {
                                     <Box>
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <Typography sx={{ mb: 1 }}>
-                                                Existing Username<span style={{ color: 'red' }}>&nbsp;*</span>
+                                                {t('organization.inputs.existingUsername.title')}
+                                                <span style={{ color: 'red' }}>&nbsp;*</span>
                                             </Typography>
                                             <div style={{ flexGrow: 1 }}></div>
                                         </div>
                                         <TextField
                                             fullWidth
-                                            placeholder='Existing Username'
+                                            placeholder={t('organization.inputs.existingUsername.title')}
                                             value={existingUsername}
                                             onChange={(e) => setExistingUsername(e.target.value)}
                                         />
                                         <Typography variant='caption'>
-                                            <i>Existing username that was set as FLOWISE_USERNAME environment variable</i>
+                                            <i>{t('organization.inputs.existingUsername.caption')}</i>
                                         </Typography>
                                     </Box>
                                     <Box>
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <Typography sx={{ mb: 1 }}>
-                                                Existing Password<span style={{ color: 'red' }}>&nbsp;*</span>
+                                                {t('organization.inputs.existingPassword.title')}
+                                                <span style={{ color: 'red' }}>&nbsp;*</span>
                                             </Typography>
                                             <div style={{ flexGrow: 1 }}></div>
                                         </div>
                                         <TextField
                                             fullWidth
                                             type='password'
-                                            placeholder='Existing Password'
+                                            placeholder={t('organization.inputs.existingPassword.title')}
                                             value={existingPassword}
                                             onChange={(e) => setExistingPassword(e.target.value)}
                                         />
                                         <Typography variant='caption'>
-                                            <i>Existing password that was set as FLOWISE_PASSWORD environment variable</i>
+                                            <i>{t('organization.inputs.existingPassword.caption')}</i>
                                         </Typography>
                                     </Box>
                                     <Divider>
-                                        <Chip label='New Account Details' size='small' />
+                                        <Chip label={t('organization.actions.newAccountDetails')} size='small' />
                                     </Divider>
                                 </>
                             )}
@@ -329,13 +332,13 @@ const OrganizationSetupPage = () => {
                                     <Box>
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <Typography>
-                                                Organization Name:<span style={{ color: 'red' }}>&nbsp;*</span>
+                                                {t('organization.inputs.organizationName')}:<span style={{ color: 'red' }}>&nbsp;*</span>
                                             </Typography>
                                             <div style={{ flexGrow: 1 }}></div>
                                         </div>
                                         <Input
                                             inputParam={orgNameInput}
-                                            placeholder='Organization Name'
+                                            placeholder={t('organization.inputs.organizationName')}
                                             onChange={(newValue) => setOrgName(newValue)}
                                             value={orgName}
                                             showDialog={false}
@@ -343,7 +346,7 @@ const OrganizationSetupPage = () => {
                                     </Box>
                                     <Box>
                                         <Divider>
-                                            <Chip label='Account Administrator' size='small' />
+                                            <Chip label={t('organization.actions.accountAdministrator')} size='small' />
                                         </Divider>
                                     </Box>
                                 </>
@@ -351,25 +354,27 @@ const OrganizationSetupPage = () => {
                             <Box>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <Typography>
-                                        Administrator Name<span style={{ color: 'red' }}>&nbsp;*</span>
+                                        {t('organization.inputs.administratorName.title')}
+                                        <span style={{ color: 'red' }}>&nbsp;*</span>
                                     </Typography>
                                     <div style={{ flexGrow: 1 }}></div>
                                 </div>
                                 <Input
                                     inputParam={usernameInput}
-                                    placeholder='Display Name'
+                                    placeholder={t('organization.inputs.administratorName.placeholder')}
                                     onChange={(newValue) => setUsername(newValue)}
                                     value={username}
                                     showDialog={false}
                                 />
                                 <Typography variant='caption'>
-                                    <i>Is used for display purposes only.</i>
+                                    <i>{t('organization.inputs.administratorName.caption')}</i>
                                 </Typography>
                             </Box>
                             <Box>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <Typography>
-                                        Administrator Email<span style={{ color: 'red' }}>&nbsp;*</span>
+                                        {t('organization.inputs.administratorEmail.title')}
+                                        <span style={{ color: 'red' }}>&nbsp;*</span>
                                     </Typography>
                                     <div style={{ flexGrow: 1 }}></div>
                                 </div>
@@ -381,28 +386,27 @@ const OrganizationSetupPage = () => {
                                     showDialog={false}
                                 />
                                 <Typography variant='caption'>
-                                    <i>Kindly use a valid email address. Will be used as login id.</i>
+                                    <i>{t('organization.inputs.administratorEmail.caption')}</i>
                                 </Typography>
                             </Box>
                             <Box>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <Typography>
-                                        Password<span style={{ color: 'red' }}>&nbsp;*</span>
+                                        {t('organization.inputs.password.title')}
+                                        <span style={{ color: 'red' }}>&nbsp;*</span>
                                     </Typography>
                                     <div style={{ flexGrow: 1 }}></div>
                                 </div>
                                 <Input inputParam={passwordInput} onChange={(newValue) => setPassword(newValue)} value={password} />
                                 <Typography variant='caption'>
-                                    <i>
-                                        Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase
-                                        letter, one digit, and one special character.
-                                    </i>
+                                    <i>{t('organization.inputs.password.caption')}</i>
                                 </Typography>
                             </Box>
                             <Box>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <Typography>
-                                        Confirm Password<span style={{ color: 'red' }}>&nbsp;*</span>
+                                        {t('organization.inputs.confirmPassword.title')}
+                                        <span style={{ color: 'red' }}>&nbsp;*</span>
                                     </Typography>
                                     <div style={{ flexGrow: 1 }}></div>
                                 </div>
@@ -412,7 +416,7 @@ const OrganizationSetupPage = () => {
                                     value={confirmPassword}
                                 />
                                 <Typography variant='caption'>
-                                    <i>Reconfirm your password. Must match the password typed above.</i>
+                                    <i>{t('organization.inputs.confirmPassword.caption')}</i>
                                 </Typography>
                             </Box>
                             <StyledButton
@@ -421,7 +425,7 @@ const OrganizationSetupPage = () => {
                                 type='submit'
                                 disabled={requiresAuthentication && (!existingUsername || !existingPassword)}
                             >
-                                Sign Up
+                                {t('organization.actions.signup.title')}
                             </StyledButton>
                             {configuredSsoProviders && configuredSsoProviders.length > 0 && <Divider sx={{ width: '100%' }}>OR</Divider>}
                             {configuredSsoProviders &&
@@ -440,7 +444,7 @@ const OrganizationSetupPage = () => {
                                                     </Icon>
                                                 }
                                             >
-                                                Sign Up With Microsoft
+                                                {t('organization.actions.signup.microsoft')}
                                             </Button>
                                         )
                                 )}
@@ -459,7 +463,7 @@ const OrganizationSetupPage = () => {
                                                     </Icon>
                                                 }
                                             >
-                                                Sign Up With Google
+                                                {t('organization.actions.signup.google')}
                                             </Button>
                                         )
                                 )}
@@ -478,7 +482,7 @@ const OrganizationSetupPage = () => {
                                                     </Icon>
                                                 }
                                             >
-                                                Sign Up With Auth0 by Okta
+                                                {t('organization.actions.signup.auth0')}
                                             </Button>
                                         )
                                 )}
