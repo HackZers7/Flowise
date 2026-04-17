@@ -184,7 +184,7 @@ const RateLimit = ({ dialogProps }) => {
                 )}
             </Stack>
             <StyledButton disabled={checkDisabled()} variant='contained' onClick={() => onSave()} sx={{ width: 'auto' }}>
-                {t('components.rateLimit.actions.save')}
+                {t('common.actions.save')}
             </StyledButton>
         </Stack>
     )

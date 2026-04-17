@@ -43,7 +43,7 @@ import { useTranslation } from 'react-i18next'
 
 const analyticProviders = [
     {
-        label: 'components.analyzeFlow.provides.langSmith',
+        label: 'common.providers.langSmith',
         name: 'langSmith',
         icon: langsmithPNG,
         url: 'https://smith.langchain.com',
@@ -71,7 +71,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.langFuse',
+        label: 'common.providers.langFuse',
         name: 'langFuse',
         icon: langfuseSVG,
         url: 'https://langfuse.com',
@@ -98,7 +98,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.lunary',
+        label: 'common.providers.lunary',
         name: 'lunary',
         icon: lunarySVG,
         url: 'https://lunary.ai',
@@ -118,7 +118,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.langWatch',
+        label: 'common.providers.langWatch',
         name: 'langWatch',
         icon: langwatchSVG,
         url: 'https://langwatch.ai',
@@ -138,7 +138,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.arize',
+        label: 'common.providers.arize',
         name: 'arize',
         icon: arizePNG,
         url: 'https://arize.com',
@@ -166,7 +166,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.phoenix',
+        label: 'common.providers.phoenix',
         name: 'phoenix',
         icon: phoenixPNG,
         url: 'https://phoenix.arize.com',
@@ -194,7 +194,7 @@ const analyticProviders = [
         ]
     },
     {
-        label: 'components.analyzeFlow.provides.opik',
+        label: 'common.providers.opik',
         name: 'opik',
         icon: opikPNG,
         url: 'https://www.comet.com/opik',
@@ -421,7 +421,7 @@ const AnalyseFlow = ({ dialogProps }) => {
                 </Accordion>
             ))}
             <StyledButton style={{ marginBottom: 10, marginTop: 10 }} variant='contained' onClick={onSave}>
-                {t('components.analyzeFlow.actions.save')}
+                {t('common.actions.save')}
             </StyledButton>
         </>
     )

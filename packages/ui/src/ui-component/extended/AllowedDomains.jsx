@@ -192,7 +192,7 @@ const AllowedDomains = ({ dialogProps, onConfirm }) => {
                 </Stack>
             </Stack>
             <StyledButton variant='contained' onClick={onSave}>
-                {t('components.allowedDomains.actions.save')}
+                {t('common.actions.save')}
             </StyledButton>
         </Stack>
     )

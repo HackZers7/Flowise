@@ -468,7 +468,7 @@ const OverrideConfig = ({ dialogProps }) => {
                             <Card sx={{ borderColor: theme.palette.primary[200] + 75, p: 2 }} variant='outlined'>
                                 <Stack sx={{ mt: 1, mb: 2, ml: 1, alignItems: 'center' }} direction='row' spacing={2}>
                                     <IconVariable />
-                                    <Typography variant='h4'>{t('components.overrideConfig.variables')}</Typography>
+                                    <Typography variant='h4'>{t('common.labels.variables')}</Typography>
                                 </Stack>
                                 <OverrideConfigTable
                                     rows={variableOverrides}
@@ -481,7 +481,7 @@ const OverrideConfig = ({ dialogProps }) => {
                 )}
             </Stack>
             <StyledButton variant='contained' onClick={onOverrideConfigSave}>
-                {t('components.overrideConfig.actions.save')}
+                {t('common.actions.save')}
             </StyledButton>
         </Stack>
     )
